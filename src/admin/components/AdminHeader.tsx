@@ -1,14 +1,17 @@
-import React from 'react';
-import { Search, Bell, MessageSquare, Settings } from 'lucide-react';
+import React from "react";
+import { Search, Bell, MessageSquare, Settings } from "lucide-react";
 
-const Header: React.FC = () => {
+export const AdminHeader: React.FC = () => {
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4">
+    <header className="bg-white border-b border-gray-200 px-6 py-4 h-18">
       <div className="flex items-center justify-between">
         {/* Search */}
         <div className="flex-1 max-w-md">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <Search
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={20}
+            />
             <input
               type="text"
               placeholder="Search..."
@@ -23,11 +26,11 @@ const Header: React.FC = () => {
             <Bell size={20} />
             <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
           </button>
-          
+
           <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
             <MessageSquare size={20} />
           </button>
-          
+
           <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
             <Settings size={20} />
           </button>
@@ -40,5 +43,3 @@ const Header: React.FC = () => {
     </header>
   );
 };
-
-export default Header;

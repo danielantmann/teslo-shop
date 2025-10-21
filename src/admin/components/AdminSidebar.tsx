@@ -1,43 +1,54 @@
-import React from 'react';
-import { 
-  Home, 
-  Users, 
-  BarChart3, 
-  Settings, 
-  FileText, 
-  ShoppingCart, 
-  Bell, 
+import React from "react";
+import {
+  Home,
+  Users,
+  BarChart3,
+  Settings,
+  FileText,
+  ShoppingCart,
+  Bell,
   HelpCircle,
   ChevronLeft,
-  ChevronRight
-} from 'lucide-react';
+  ChevronRight,
+} from "lucide-react";
+import { CustomLogo } from "@/components/custom/CustomLogo";
+import { Link, useLocation } from "react-router";
 
 interface SidebarProps {
   isCollapsed: boolean;
   onToggle: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
+export const AdminSidebar: React.FC<SidebarProps> = ({
+  isCollapsed,
+  onToggle,
+}) => {
   const menuItems = [
-    { icon: Home, label: 'Dashboard', active: true },
-    { icon: BarChart3, label: 'Analytics' },
-    { icon: Users, label: 'Users' },
-    { icon: ShoppingCart, label: 'Orders' },
-    { icon: FileText, label: 'Reports' },
-    { icon: Bell, label: 'Notifications' },
-    { icon: Settings, label: 'Settings' },
-    { icon: HelpCircle, label: 'Help' },
+    { icon: Home, label: "Dashboard", to: "/admin" },
+    { icon: BarChart3, label: "Productos", to: "/admin/products" },
+    { icon: Users, label: "Usuarios" },
+    { icon: ShoppingCart, label: "Ordenes" },
+    { icon: FileText, label: "Reportes" },
+    { icon: Bell, label: "Notificaciones" },
+    { icon: Settings, label: "Ajustes" },
+    { icon: HelpCircle, label: "Ayuda" },
   ];
 
+  const { pathname } = useLocation();
+
+  const isActiveRoute = (to: string) => {
+    return pathname === to;
+  };
+
   return (
-    <div className={`bg-white border-r border-gray-200 transition-all duration-300 ease-in-out ${
-      isCollapsed ? 'w-16' : 'w-64'
-    } flex flex-col`}>
+    <div
+      className={`bg-white border-r border-gray-200 transition-all duration-300 ease-in-out  h-18${
+        isCollapsed ? "w-18" : "w-64"
+      } flex flex-col`}
+    >
       {/* Header */}
-      <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-        {!isCollapsed && (
-          <h1 className="text-xl font-bold text-gray-800">AdminPro</h1>
-        )}
+      <div className="p-4 border-b border-gray-200 flex items-center justify-between h-18">
+        {!isCollapsed && <CustomLogo />}
         <button
           onClick={onToggle}
           className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
@@ -53,19 +64,19 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
             const Icon = item.icon;
             return (
               <li key={index}>
-                <a
-                  href="#"
+                <Link
+                  to={item.to || "/admin"}
                   className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-all duration-200 group ${
-                    item.active
-                      ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    isActiveRoute(item.to || "/xxx")
+                      ? "bg-blue-50 text-blue-600 border-r-2 border-blue-600"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                   }`}
                 >
                   <Icon size={20} className="flex-shrink-0" />
                   {!isCollapsed && (
                     <span className="font-medium">{item.label}</span>
                   )}
-                </a>
+                </Link>
               </li>
             );
           })}
@@ -80,7 +91,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
               JD
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">John Doe</p>
+              <p className="text-sm font-medium text-gray-900 truncate">
+                John Doe
+              </p>
               <p className="text-xs text-gray-500 truncate">john@company.com</p>
             </div>
           </div>
@@ -89,5 +102,3 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     </div>
   );
 };
-
-export default Sidebar;
