@@ -2,7 +2,7 @@ import { AdminTitle } from "@/admin/components/AdminTitle";
 import { Button } from "@/components/ui/button";
 import type { Product, Size } from "@/interfaces/product.interface";
 import { X, SaveAll, Tag, Upload, Plus } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
@@ -12,10 +12,16 @@ interface Props {
   subTitle: string;
   product: Product;
   isPending: boolean;
-  onSubmit: (productLike: Partial<Product>) => Promise<void>;
+  onSubmit: (
+    productLike: Partial<Product> & { files?: File[] }
+  ) => Promise<void>;
 }
 
 const availableSizes: Size[] = ["XS", "S", "M", "L", "XL", "XXL"];
+
+interface FormInputs extends Product {
+  files?: File[];
+}
 
 export const ProductForm = ({
   title,
@@ -31,14 +37,19 @@ export const ProductForm = ({
     getValues,
     setValue,
     watch,
-  } = useForm({
+  } = useForm<FormInputs>({
     defaultValues: product,
   });
+
+  const [files, setFiles] = useState<File[]>([]);
+
+  useEffect(() => {
+    setFiles([]);
+  }, [product]);
+
   const selectedSizes = watch("sizes");
   const selectedTags = watch("tags");
   const currentStock = watch("stock");
-
-  const [files, setFiles] = useState<File[]>([]);
   const [dragActive, setDragActive] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -91,6 +102,8 @@ export const ProductForm = ({
     if (!files) return;
 
     setFiles((prev) => [...prev, ...Array.from(files)]);
+    const currentFiles = getValues("files") || [];
+    setValue("files", [...currentFiles, ...Array.from(files)]);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,6 +113,8 @@ export const ProductForm = ({
     if (!files) return;
 
     setFiles((prev) => [...prev, ...Array.from(files)]);
+    const currentFiles = getValues("files") || [];
+    setValue("files", [...currentFiles, ...Array.from(files)]);
   };
 
   return (
