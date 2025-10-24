@@ -55,7 +55,7 @@ export const AdminProductsPage = () => {
 
         <TableBody>
           {data?.products.map((product) => (
-            <TableRow>
+            <TableRow key={product.id}>
               <TableCell>
                 <img
                   src={product.images[0]}
@@ -63,12 +63,14 @@ export const AdminProductsPage = () => {
                   className="w-20 object-cover rounded-md"
                 />
               </TableCell>
-              <Link
-                to={`/admin/products/${product.id}`}
-                className="hover:text-blue-500 underline"
-              >
-                <TableCell>{product.title}</TableCell>
-              </Link>
+              <TableCell>
+                <Link
+                  to={`/admin/products/${product.id}`}
+                  className="hover:text-blue-500 underline"
+                >
+                  {product.title}
+                </Link>
+              </TableCell>
               <TableCell>{currencyFormatter(product.price)}</TableCell>
               <TableCell>{product.gender}</TableCell>
               <TableCell>{product.stock}</TableCell>

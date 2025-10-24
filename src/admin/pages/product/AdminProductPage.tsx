@@ -11,6 +11,8 @@ export const AdminProductPage = () => {
   const { isLoading, data: product, isError, mutation } = useProduct(id || "");
   const navigate = useNavigate();
 
+  const isPending = mutation.isPending;
+
   const title = id === "new" ? "Nuevo producto" : "Editar producto";
   const subtitle =
     id === "new"
@@ -52,6 +54,7 @@ export const AdminProductPage = () => {
       subTitle={subtitle}
       product={product}
       onSubmit={handleSubmit}
+      isPending={isPending}
     />
   );
 };
